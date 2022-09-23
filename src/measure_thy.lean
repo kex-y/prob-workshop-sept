@@ -124,12 +124,14 @@ in mathlib. These are:
 - `ae_measurable`
 - `strongly_measurable`
 - `ae_strongly_measurable`
-The reasons for their existence is technical so you can ask me if you are 
-interested. Along side `measurable`, we will also see them quite often though 
-all you have to know is (a) in most cases, `measurable` and 
-`strongly_measurable` are equivalent and (b) `ae(_strongly)_measurable` is a 
-slightly weaker version than their non-ae counter part and most theorems can be 
-relaxed to only require the ae version.
+The reasons for their existence is technical but TLDR: `ae_foo f` is the predicate 
+that `f` is almost everywhere equal to some function satisfying `foo` (see the 
+a.e. filter section) while `strongly_measurable f` is saying `f` is the limit 
+of a sequence of simple functions.
+
+Along side `measurable`, we will also see them quite often though 
+all you have to know is in most cases (range is metrizable and second-countable), 
+`measurable` and `strongly_measurable` are equivalent.
 -/
 
 example : measurable (id : Ω → Ω) :=
@@ -239,7 +241,7 @@ example [has_le X] := f ≤ᵐ[μ] g
 -- for the statement that `P` holds a.e.
 example (P : Ω → Prop) := ∀ᵐ ω ∂μ, P ω
 
--- Sanity check: the above notation actually means what we thing
+-- Sanity check: the above notation actually means what we think
 example (P : Ω → Prop) : (∀ᵐ ω ∂μ, P ω) ↔ μ {ω | P ω}ᶜ = 0 := 
 begin
   refl,
