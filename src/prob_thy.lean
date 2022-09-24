@@ -147,5 +147,42 @@ converges in measure implies it has a subsequence which conveges a.e. This is
 formalized as `tendsto_in_measure.exists_seq_tendsto_ae`.
 -/
 
+example (f : ℕ → Ω → ℝ) (f' : Ω → ℝ) 
+  (hf : ∀ n, ae_measurable (f n) μ) (hf' : ae_measurable f' μ)
+  (hft : tendsto (λ n, snorm (f n - f') 1 μ) at_top (𝓝 0)) : 
+  ∃ ns : ℕ → ℕ, strict_mono ns ∧ 
+  ∀ᵐ ω ∂μ, tendsto (λ n, f (ns n) ω) at_top (𝓝 (f' ω)) :=
+begin
+  sorry
+end
+
+-- In the above exercise, if `hf'` necessary? I suspect not. Try to prove the 
+-- following lemma (I don't this this is in mathlib!)
+
+-- *Hint*: try proving it on paper first
+-- *Maths hint*: Fatou's lemma
+example (f : ℕ → Ω → ℝ) (f' : Ω → ℝ) (hf : ∀ n, measurable (f n)) 
+  (hft : tendsto (λ n, snorm (f n - f') 1 μ) at_top (𝓝 0)) : 
+  ae_measurable f' μ :=
+begin
+  sorry
+end
+
+-- Now, give the above example a name and use it to prove the following
+example (f : ℕ → Ω → ℝ) (f' : Ω → ℝ) (hf : ∀ n, ae_measurable (f n) μ) 
+  (hft : tendsto (λ n, snorm (f n - f') 1 μ) at_top (𝓝 0)) : 
+  ae_measurable f' μ :=
+begin
+  sorry
+end
+
+-- Bonus: try to generalize the above for convergence in Lp rather than just 
+-- convergence in L1.
+
+/-!
+## Conditional expectation
+
+
+-/
 
 end measure_theory
