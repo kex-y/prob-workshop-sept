@@ -171,9 +171,7 @@ variables [normed_add_comm_group X] [normed_space ℝ X] [complete_space X]
 -- `∫ x, f x ∂μ`. If you want to integrate over the set `s : set Ω` then write 
 -- `∫ x in s, f x ∂μ`.
 
--- Proving anything new is now slightly non-trivial so try to find the following 
--- theorems in mathlib
-
+-- Try looking in mathlib
 example {f g : Ω → X} (hf : integrable f μ) (hg : integrable g μ) : 
   ∫ x, f x + g x ∂μ = ∫ x, f x ∂μ + ∫ x, g x ∂μ :=
 begin
@@ -181,6 +179,14 @@ begin
 end
 
 example (a : X) (s : set Ω) : ∫ x in s, a ∂μ = (μ s).to_real • a :=
+begin
+  sorry
+end
+
+-- Harder
+example {f : Ω → ℝ} (hf : measurable f) 
+  (hμ : 0 < μ {ω | 0 < f ω}) : 
+  (0 : ℝ) < ∫ ω in {ω | 0 < f ω}, f ω ∂μ :=
 begin
   sorry
 end
