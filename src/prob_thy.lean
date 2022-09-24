@@ -1,4 +1,4 @@
-import probability.martingale.borel_cantelli 
+import probability.martingale.basic
 
 open filter
 open_locale nnreal ennreal measure_theory probability_theory big_operators topological_space
@@ -182,7 +182,109 @@ end
 /-!
 ## Conditional expectation
 
+Conditional expectation is an important definition in probability theory. While 
+you might have seen a version of conditional expecation in elementary probability 
+theory where one conditions on an event, we shall work with a much more general 
+definition in which we condition on a σ-algebra. 
 
+The formal definition of the condition expectation is the following: 
+Let `(Ω, ℱ, μ)` be a measure space and suppose `f` is a measurable function 
+and `𝒢` is a sub-σ-algebra (i.e. `𝒢` is also a σ-algebra and all `𝒢`-measurable 
+sets are also `ℱ`-measurable), then a `𝒢`-measurable function `g` is said to 
+be a conditional expectation of `f` if for all `𝒢`-measurable sets `s : set Ω`, 
+`∫ ω in s, f ω ∂μ = ∫ ω in s, g ω ∂μ`. 
+
+One can prove that there always exists a conditional expectation and it is 
+unique up to almost everywhere equality however this is not trivial to prove. 
+
+Personally, I think about the conditional expectation in two ways. 
+- Geometrically: recall that the space `L²(ℱ, μ)` forms a Hilbert space, 
+  and furthermore, should we restrict the space onto the sub-σ-algebra, the 
+  resulting space `L²(𝒢, μ)` is a closed vector-subspace of `L²(ℱ, μ)`. Thus, 
+  the orthogonal projection `P : L²(ℱ, μ) → L²(𝒢, μ)` is a well defined 
+  operator. This orthogonal projection `P` is precisely the conditional 
+  expecation. 
+  
+  Not only does this method provides a mental image for what the conditiona 
+  expecation is doing, we also obtain the existence and uniqueness for free 
+  for `L²` functions. However, the conditional expecations is also defined for 
+  `L¹` functions. To obtain the general definition, one exploit the density of 
+  `L²` functions in `L¹` to define the conditional expecation in `L¹` as a
+  limit of the conditional expecation in `L²`. 
+
+- Probabilistically: the σ-algebra in probability theory is often interpreted 
+  as information as we shall see in the defintion of filtrations. Thus, 
+  conditioning on σ-algebras is a natural thing to do probabilitically where 
+  we would like to update our random variable providing some information.
+  (Recall the σ-algebra is often refereed as the event space as it is suppose 
+  to contain all possible events. One way to think about sub-σ-algebras as 
+  additional information is that we have restricted the number of possible 
+  events, i.e. ruling them out given the information.)
+  
+  The updated random variable should certainly be measurably with respect to 
+  the new sub-σ-algebra `𝒢` while it should behave as before on `𝒢`. 
+  To demonstrate the second point we test it on all possible `𝒢`-measurable sets 
+  resulting in the definition of the conditional expecation. This is sensible 
+  since, if `𝒜` is a σ-algebra and `f` and `g` are `𝒜`-measurable, 
+  `f = g` a.e. if `∫ ω in s, f ω ∂μ = ∫ ω in s, g ω ∂μ` for all `𝒜`-measurable 
+  sets `s` (try proving this in Lean).
+
+In Lean, the conditional expecation is known as `condexp` and is defined via. 
+the projection process outlined above and we introduce the notation `μ[f | 𝒢]` 
+for the conditional expecation of the function `f` with respect to the σ-algebra 
+`𝒢` (in literature you might see `𝔼[f | 𝒢]`). It will be useful if you can 
+familiarize yourself with the basic properties of conditional expectation 
+(Thm. 33 of https://github.com/JasonKYi/y3_notes/blob/main/Probability_Theory/Probability_Theory.pdf
+is what you need in most cases though section 9 of https://www.xuemei.org/Measure-Integration.pdf
+contains a lot more about conditional expectation).
+
+PS. should you read about the martingale convergence theorems, you will see that 
+a lot of the conditional limit theorems are corollaries of the martingale 
+convergence theorems.
 -/
+
+example (f : Ω → ℝ) {ℱ 𝒢 : measurable_space Ω} 
+  (h𝒢 : 𝒢 ≤ m0) (hℱ : ℱ ≤ 𝒢) [sigma_finite (μ.trim h𝒢)] : 
+  μ[μ[f | ℱ] | 𝒢] = μ[f | ℱ] :=
+begin
+  sorry
+end
+
+/-
+Let's now try to do a hard problem. The following question is part 3 of the second 
+question from the 2014 Part III advanced probability exam. Do assume basic 
+properties about the conditional expectation and add sorry-ed lemmas when needed 
+if they don't exists in mathlib (e.g. (not that you necessarily need it) 
+the conditional Jensen's inequality).
+
+Here's a couple of *Lean hints* (there is maths hints below the question if you 
+are stuck on the maths):
+- as ususal, do it on paper first 
+- after you've done it on paper, think about what steps probably already exists 
+  as lemmas in mathlib (and find them)
+- instead of working directly with functions, would it be easier to work with 
+  elements with the `Lp` type instead 
+-/
+example {𝒢 : measurable_space Ω} (h𝒢 : 𝒢 ≤ m0) (f g : Ω → ℝ) 
+  (hf : mem_ℒp f 2 μ) (hg : mem_ℒp g 2 μ) 
+  (hfg₁ : μ[g | 𝒢] =ᵐ[μ] f) (hfg₂ : snorm f 2 μ = snorm g 2 μ) :
+  f =ᵐ[μ] g :=
+begin
+  sorry
+end
+
+/-
+*Maths hints*: 
+- an orthogonal projection is self-adjoint
+- when does the Cauchy-Schwartz inequality achieves equality
+-/
+
+-- Give the above lemma a name and use it to prove the following
+example {𝒢 : measurable_space Ω} (h𝒢 : 𝒢 ≤ m0) (f : Ω → ℝ) 
+  (hf : mem_ℒp f 2 μ) (hf' : snorm f 2 μ = snorm (μ [f | 𝒢]) 2 μ) :
+  ae_strongly_measurable f (μ.trim h𝒢) :=
+begin 
+  sorry
+end
 
 end measure_theory

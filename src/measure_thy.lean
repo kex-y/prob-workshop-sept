@@ -1,4 +1,4 @@
-import probability.martingale.borel_cantelli 
+import probability.martingale.basic
 
 open filter
 open_locale nnreal ennreal measure_theory probability_theory big_operators topological_space
