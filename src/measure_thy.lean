@@ -184,7 +184,7 @@ begin
 end
 
 -- Harder
-example {f : Ω → ℝ} (hf : measurable f) 
+example {f : Ω → ℝ} (hf : measurable f) (hint : integrable f μ)
   (hμ : 0 < μ {ω | 0 < f ω}) : 
   (0 : ℝ) < ∫ ω in {ω | 0 < f ω}, f ω ∂μ :=
 begin
