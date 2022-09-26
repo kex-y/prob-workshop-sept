@@ -1,4 +1,5 @@
 /-! 
+
 # Probability overivew
 
 In this short file, I will give a brief overview of what probability theory 
@@ -41,14 +42,44 @@ e.g. conditional expectation. I will now list the relevant files.
 - `stopping`: defines stopping time for stochastic processes
 
 `probability.martingale._`:
+- `basic`: defines (sub/super)martingales and prove basic properties about them.
+- `borel_cantelli`: proves the one-sided (sub)martingale bound and Lévy's 
+  generalized Borel-Cantelli lemma.
+- `centering`: proves the Doob's decomposition.
+- `convergence`: proves the a.e. and L¹-martingale convergence theorems.
+- `optional_stopping`: optional stopping theorem and the maximal inequality.
+- `upcrossing`: two variants of the Doob's upcrossing estimate used to prove 
+  the martingale covnergence theorems.
 
 `probability.probability_mass_function._`:
 I don't know much about this folder. I think these are finite stuff, not very 
 relevant to what we want to work with but a lot of "Giry monads" whatever those 
 are.
 
-uniform int
-condexp
-convergence in measure
+`measure_theory.function.conditional_expectation._`:
+- `basic`: the construction of the conditional expecation. A lot of useful 
+  lemmas are there too though the idea is we will eventually move them out of 
+  there.
+- `indicator`: the full-out property of conditional expectation for indicator 
+  functions.
+- `real`: contains results about the conditional expectation of real-valued 
+  random variables (in contrast to Banach-space valued random variables). 
+  In particular, this shows that our construction is equivalent to the 
+  construction of the conditional expectation via. the Radon-Nikodym derivative. 
+  Also, it show the pull-out proerty for real-valued random variables.
+  It also contains some cool bounds for real-valued random variables also, 
+  though we hope to generalize a lot of them once we have the conditional 
+  Jensen's inequality.
+
+`measure_theory.function.uniform_integrable`: uniform integrability in both the 
+analyst's and the probabilist's sense (the two definitions are *not* equivalent) 
+and proves the Vitali's convergence theorem.
+
+`measure_theory.function.convergence_in_measure`: convergence in measure. See 
+the `prob_thy` file for more details.
+
+I am also very familiar with the `measure_theory.decomposition` folder so you 
+can ask me about it if you are interested in the formalization of the 
+Radon-Nikodym theorem.
 
 -/
