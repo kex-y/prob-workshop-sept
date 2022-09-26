@@ -12,7 +12,7 @@ namespace measure_theory
 Now that we know the basics of measure theory in Lean, let us talk about 
 measure theoretic probability theory. While probability theory is a large area 
 in mathematics, mathlib itself does not contain much of it at the moment. In 
-this section I will provide a basic overview of what is there. 
+this section I will introduce some notions fundamental to probability theory. 
 
 -/
 
