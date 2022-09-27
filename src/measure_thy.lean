@@ -54,14 +54,27 @@ example (S₁ S₂ S₃ : set Ω)
   (hS₁ : measurable_set S₁) (hS₂ : measurable_set S₂) (hS₃ : measurable_set S₃) :
   measurable_set (S₁ ∪ (S₂ \ S₃)) := 
 begin
-  sorry
+  apply measurable_set.union, 
+  { exact hS₁, },
+  { apply measurable_set.diff,
+    { exact hS₂, },
+    { exact hS₃, },
+  },
 end
-
+--  or in another more concise way
+example (S₁ S₂ S₃ : set Ω) 
+  (hS₁ : measurable_set S₁) (hS₂ : measurable_set S₂) (hS₃ : measurable_set S₃) :
+  measurable_set (S₁ ∪ (S₂ \ S₃)) := 
+    measurable_set.union hS₁ ( 
+      measurable_set.diff hS₂ hS₃
+    )
+  
 example (s : ℕ → set Ω) (S : set Ω) 
   (hs : ∀ n, measurable_set (s n)) (hS : measurable_set S) : 
   measurable_set (S ∩ ⋂ n, s n) :=
 begin
-  sorry
+  apply measurable_set.union,
+
 end
 
 -- Now lets add a measure `μ` on `Ω`
@@ -92,7 +105,17 @@ Try proving the following:
 example (S T : set Ω) (hS : μ S ≠ ∞) (hT : measurable_set T) : 
   μ (S ∪ T) = μ S + μ T - μ (S ∩ T) :=
 begin
-  sorry
+  have h:= ennreal.add_sub_cancel_right,
+  have h2:= measure_union_add_inter S hT,
+  rw ← h2,
+  symmetry,
+  apply h,
+  have h3: μ(S ∩ T) ≤ μ S,
+  apply measure_mono,
+  apply set.inter_subset_left,
+  rw ← lt_top_iff_ne_top at hS ⊢,  -- rewrite left like apply but with the iff instead of if
+  apply lt_of_le_of_lt h3 hS,   -- a ≤ b & b ⋖ c => a ⋖ c 
+                            -- with a = μ (S ∩ T) ≤ μ S, b = μ S, c = ⊤ (top infinite)
 end
 
 /-
@@ -136,8 +159,12 @@ all you have to know is in most cases (range is metrizable and second-countable)
 
 example : measurable (id : Ω → Ω) :=
 begin
-  sorry
+  intros s h,
+  exact h,
 end
+
+example : measurable (id : Ω → Ω) :=
+  λ S, id   -- id: Ω → Ω  
 
 example (g : X → X) (hg : measurable g) (hf : measurable f) :
   measurable (g ∘ f) :=
